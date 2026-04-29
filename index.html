@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VARG-Tools | EGU 2026 Demo</title>
+    <style>
+        :root {
+            --ink: #2c3e50;
+            --muted: #5f6b76;
+            --accent: #18bc9c;
+            --accent-dark: #13907a;
+            --panel: rgba(255, 255, 255, 0.96);
+            --panel-strong: #ffffff;
+            --line: #d7e0e7;
+            --soft: #f4f7fa;
+            --shadow: 0 24px 70px rgba(19, 32, 45, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(24, 188, 156, 0.16), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(44, 62, 80, 0.12), transparent 28%),
+                linear-gradient(180deg, #edf3f7 0%, #dee7ed 100%);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .page {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        .shell {
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .accent-bar {
+            height: 8px;
+            background: linear-gradient(90deg, var(--ink), var(--accent));
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.25fr 0.95fr;
+            gap: 28px;
+            align-items: start;
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(24, 188, 156, 0.12);
+            color: var(--accent-dark);
+            font-size: 0.84rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .brand .wordmark {
+            width: min(100%, 340px);
+            height: auto;
+            display: block;
+        }
+
+        .brand .symbol {
+            width: 70px;
+            height: 70px;
+            flex: 0 0 auto;
+        }
+
+        .brand img {
+            display: block;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--ink);
+            font-size: clamp(2.2rem, 4.8vw, 3.7rem);
+            line-height: 1.02;
+            letter-spacing: -0.03em;
+        }
+
+        .subtitle {
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 1.08rem;
+            line-height: 1.6;
+            max-width: 62ch;
+        }
+
+        .lead-card {
+            background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 22px;
+        }
+
+        .badge-image {
+            display: block;
+            width: min(100%, 260px);
+            height: auto;
+            margin: 0 0 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(44, 62, 80, 0.08);
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.12);
+        }
+
+        .lead-card h2,
+        .section h2 {
+            margin: 0 0 10px;
+            color: var(--ink);
+            font-size: 1.1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .lead-card p,
+        .section p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        .lead-emphasis {
+            color: var(--ink);
+            font-weight: 800;
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+        }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: var(--soft);
+            border: 1px solid var(--line);
+            color: var(--ink);
+            font-size: 0.92rem;
+            line-height: 1;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin: 22px 0 0;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            min-height: 56px;
+            padding: 0 18px;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+        }
+
+        .button:focus-visible {
+            outline: 3px solid rgba(24, 188, 156, 0.3);
+            outline-offset: 2px;
+        }
+
+        .button-primary {
+            background: linear-gradient(135deg, var(--ink) 0%, #355a75 100%);
+            color: #ffffff;
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.2);
+        }
+
+        .button-primary:hover {
+            box-shadow: 0 14px 30px rgba(44, 62, 80, 0.26);
+        }
+
+        .button-secondary {
+            background: linear-gradient(135deg, var(--accent) 0%, #37c9ab 100%);
+            color: #ffffff;
+            box-shadow: 0 10px 24px rgba(24, 188, 156, 0.2);
+        }
+
+        .button-secondary:hover {
+            box-shadow: 0 14px 30px rgba(24, 188, 156, 0.26);
+        }
+
+        .button-outline {
+            background: #ffffff;
+            border-color: var(--line);
+            color: var(--ink);
+            box-shadow: 0 10px 24px rgba(44, 62, 80, 0.08);
+        }
+
+        .button-outline:hover {
+            box-shadow: 0 14px 30px rgba(44, 62, 80, 0.12);
+        }
+
+        .mirror-section,
+        .section {
+            margin-top: 22px;
+            background: var(--panel-strong);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 22px;
+        }
+
+        .mirror-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .mirror-header p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .mirror-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .mirror-card {
+            height: 100%;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mirror-tag {
+            display: inline-flex;
+            align-self: flex-start;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(44, 62, 80, 0.08);
+            color: var(--ink);
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .mirror-card h3 {
+            margin: 0;
+            color: var(--ink);
+            font-size: 1.08rem;
+        }
+
+        .mirror-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .mirror-link {
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 14px;
+            border-radius: 14px;
+            border: 1px solid var(--line);
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 700;
+            background: #ffffff;
+            transition: border-color 160ms ease, color 160ms ease, transform 160ms ease;
+        }
+
+        .mirror-link:hover {
+            border-color: var(--accent);
+            color: var(--accent-dark);
+            transform: translateY(-1px);
+        }
+
+        .coming-soon {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(44, 62, 80, 0.08);
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .install-section {
+            margin-top: 22px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 22px;
+        }
+
+        .install-header {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .install-header p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.55;
+            max-width: 72ch;
+        }
+
+        .install-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .install-card {
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: #fff;
+            padding: 18px;
+        }
+
+        .install-card h3 {
+            margin: 0 0 10px;
+            color: var(--ink);
+            font-size: 1.03rem;
+        }
+
+        .install-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .info-list {
+            margin: 12px 0 0;
+            padding-left: 20px;
+            color: var(--muted);
+            line-height: 1.75;
+        }
+
+        .info-list li + li {
+            margin-top: 6px;
+        }
+
+        .notice {
+            background: #f7fbf9;
+            border: 1px solid rgba(24, 188, 156, 0.25);
+        }
+
+        .notice h2 {
+            color: var(--accent-dark);
+        }
+
+        .muted-link {
+            color: var(--accent-dark);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .muted-link:hover {
+            text-decoration: underline;
+        }
+
+        .status-line {
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 12px;
+            color: var(--accent-dark);
+            font-style: italic;
+        }
+
+        .footer {
+            padding: 18px 40px 28px;
+            color: #73808c;
+            font-size: 0.86rem;
+            border-top: 1px solid rgba(215, 224, 231, 0.75);
+            background: rgba(255, 255, 255, 0.58);
+        }
+
+        @media (max-width: 880px) {
+            .hero,
+            .grid-2,
+            .mirror-grid,
+            .install-grid,
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 28px 20px;
+            }
+
+            .footer {
+                padding: 16px 20px 22px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            body {
+                padding: 12px;
+            }
+
+            .shell {
+                border-radius: 22px;
+            }
+
+            .lead-card,
+            .mirror-section,
+            .install-section,
+            .section {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="shell">
+            <div class="accent-bar"></div>
+            <div class="content">
+                <div class="brand" aria-label="VARG-Tools logo">
+                    <img class="symbol" src="www/varg-tools-symbol.svg" alt="VARG-Tools symbol">
+                    <img class="wordmark" src="www/VARG-Tools_wordlogo.svg" alt="VARG-Tools wordmark">
+                </div>
+                <div class="hero">
+                    <div>
+                        <div class="eyebrow">EGU 2026 conference demo</div>
+                        <p class="subtitle">
+                            This conference build accompanies the EGU 2026 poster
+                            <strong>"VARG-Tools: Browser-Based Software to Streamline Tephra Correlation and Bayesian Age Modelling"</strong>.
+                            Launch the hosted demo in your browser or open the meeting abstract for the poster context.
+                        </p>
+                        <p class="subtitle">
+                            VARG-Tools supports geochemical data processing, visualization, and chronology building for
+                            tephra correlation workflows. This page is tailored for conference visitors who want to try
+                            the software after seeing the poster and abstract.
+                        </p>
+
+                        <div class="chip-row" aria-label="App modules">
+                            <span class="chip">Processing</span>
+                            <span class="chip">Visualization</span>
+                            <span class="chip">Chronology</span>
+                        </div>
+
+                        <div class="actions">
+                            <button class="button button-primary" type="button" onclick="launchApp()">
+                                Launch EGU demo
+                            </button>
+                            <a class="button button-outline" href="https://meetingorganizer.copernicus.org/EGU26/EGU26-5991.html" target="_blank" rel="noopener noreferrer">
+                                View EGU abstract
+                            </a>
+                        </div>
+
+                        <div class="section notice">
+                            <h2>Demo notes</h2>
+                            <ul class="info-list">
+                                <li>Instances may disconnect after inactivity to conserve server time.</li>
+                                <li>Download or save important UMAP embeddings, exports, and project state.</li>
+                                <li>Use the in-app guide for workflow details and data requirements.</li>
+                            </ul>
+                        </div>
+
+                        <div class="section">
+                            <h2>Need help?</h2>
+                            <p>
+                                Direct mirrors:
+                                <a class="muted-link" href="https://varg.shinyapps.io/VARGtools_demo/" target="_blank" rel="noopener noreferrer">Mirror A</a>
+                                /
+                                <a class="muted-link" href="https://matthew-bolton.shinyapps.io/VARGtools_demo/" target="_blank" rel="noopener noreferrer">Mirror B</a>.
+                                Questions can go to
+                                <a class="muted-link" href="mailto:bolton1+varg@ualberta.ca">bolton1+varg@ualberta.ca</a>.
+                            </p>
+                        </div>
+
+                        <div class="loading" id="loadingText" aria-live="polite">Opening the app...</div>
+                    </div>
+
+                    <div class="lead-card">
+                        <img class="badge-image" src="www/egu_ospp_label_yellow.png" alt="EGU Outstanding Student and PhD candidate Presentation contest badge">
+                        <h2>Poster and OSPP note</h2>
+                        <p><span class="lead-emphasis">This demo accompanies the EGU 2026 poster presentation and is configured as a conference-facing entry point.</span></p>
+                        <ul class="info-list">
+                            <li>The poster is entered in the Outstanding Student and PhD candidate Presentation contest.</li>
+                            <li>Eligible registered EGU participants are encouraged to vote using the evaluation form on the online presentation page.</li>
+                            <li>Please vote only if you are not a BSc or MSc student or PhD candidate, are not participating in OSPP, are not a co-author, and do not share the first author's affiliation.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer">
+                <span>&copy; 2026 Matthew S M Bolton</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const MIRRORS = [
+            "https://varg.shinyapps.io/VARGtools_demo/",
+            "https://matthew-bolton.shinyapps.io/VARGtools_demo/"
+        ];
+        const MIRROR_WEIGHT = 0.5;
+
+        function launchApp() {
+            const loadingText = document.getElementById("loadingText");
+            loadingText.style.display = "block";
+
+            const selectedUrl = Math.random() < MIRROR_WEIGHT ? MIRRORS[0] : MIRRORS[1];
+            window.open(selectedUrl, "_blank", "noopener,noreferrer");
+
+            window.setTimeout(function () {
+                loadingText.style.display = "none";
+            }, 1000);
+        }
+
+    </script>
+</body>
+</html>
