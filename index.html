@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VARG-Tools | EGU 2026 Demo</title>
+    <title>VARG-Tools | Post-EGU Update</title>
     <style>
         :root {
             --ink: #2c3e50;
@@ -432,13 +432,6 @@
             font-size: 0.95rem;
         }
 
-        .loading {
-            display: none;
-            margin-top: 12px;
-            color: var(--accent-dark);
-            font-style: italic;
-        }
-
         .footer {
             padding: 18px 40px 28px;
             color: #73808c;
@@ -507,16 +500,15 @@
                 </div>
                 <div class="hero">
                     <div>
-                        <div class="eyebrow">EGU 2026 conference demo</div>
+                        <div class="eyebrow">Post-EGU update</div>
                         <p class="subtitle">
-                            This conference build accompanies the EGU 2026 poster
-                            <strong>"VARG-Tools: Browser-Based Software to Streamline Tephra Correlation and Bayesian Age Modelling"</strong>.
-                            Launch the hosted demo in your browser or open the meeting abstract for the poster context.
+                            <strong>Thanks for your interest in VARG-Tools.</strong> The EGU 2026 poster prompted a lot of thoughtful discussion,
+                            several hours of hands-on use, and valuable feedback from new users. This page now serves as a post-conference update
+                            rather than a public demo launcher.
                         </p>
                         <p class="subtitle">
-                            VARG-Tools supports geochemical data processing, visualization, and chronology building for
-                            tephra correlation workflows. This page is tailored for conference visitors who want to try
-                            the software after seeing the poster and abstract.
+                            As the manuscript and review process move forward, the temporary EGU hosted-app links have been retired.
+                            I will update this page again once the V1.0 application is published so it points to the proper long-term access location.
                         </p>
 
                         <div class="chip-row" aria-label="App modules">
@@ -526,46 +518,41 @@
                         </div>
 
                         <div class="actions">
-                            <button class="button button-primary" type="button" onclick="launchApp()">
-                                Launch EGU demo
-                            </button>
+                            <a class="button button-primary" href="mailto:bolton1+varg@ualberta.ca?subject=VARG-Tools%20interest%20from%20EGU%202026">
+                                Contact Matt
+                            </a>
                             <a class="button button-outline" href="https://meetingorganizer.copernicus.org/EGU26/EGU26-5991.html" target="_blank" rel="noopener noreferrer">
                                 View EGU abstract
                             </a>
                         </div>
 
                         <div class="section notice">
-                            <h2>Demo notes</h2>
+                            <h2>Current status</h2>
                             <ul class="info-list">
-                                <li>Instances may disconnect after inactivity to conserve server time.</li>
-                                <li>Download or save important UMAP embeddings, exports, and project state.</li>
-                                <li>Use the in-app guide for workflow details and data requirements.</li>
+                                <li>The conference-facing hosted demo is no longer being served from this page.</li>
+                                <li>VARG-Tools is being updated alongside manuscript review and publication planning.</li>
+                                <li>This page will be revised again when the V1.0 release has a stable public access point.</li>
                             </ul>
                         </div>
 
                         <div class="section">
-                            <h2>Need help?</h2>
+                            <h2>In the meantime</h2>
                             <p>
-                                Direct mirrors:
-                                <a class="muted-link" href="https://varg.shinyapps.io/VARGtools_demo/" target="_blank" rel="noopener noreferrer">Mirror A</a>
-                                /
-                                <a class="muted-link" href="https://matthew-bolton.shinyapps.io/VARGtools_demo/" target="_blank" rel="noopener noreferrer">Mirror B</a>.
-                                Questions can go to
+                                If you would like to follow up about the poster, the application, or potential use cases,
+                                questions can go to
                                 <a class="muted-link" href="mailto:bolton1+varg@ualberta.ca">bolton1+varg@ualberta.ca</a>.
                             </p>
                         </div>
-
-                        <div class="loading" id="loadingText" aria-live="polite">Opening the app...</div>
                     </div>
 
                     <div class="lead-card">
                         <img class="badge-image" src="www/egu_ospp_label_yellow.png" alt="EGU Outstanding Student and PhD candidate Presentation contest badge">
-                        <h2>Poster and OSPP note</h2>
-                        <p><span class="lead-emphasis">This demo accompanies the EGU 2026 poster presentation and is configured as a conference-facing entry point.</span></p>
+                        <h2>Thank you</h2>
+                        <p><span class="lead-emphasis">EGU 2026 generated strong interest in VARG-Tools and several extended live demos at the poster.</span></p>
                         <ul class="info-list">
-                            <li>The poster is entered in the Outstanding Student and PhD candidate Presentation contest.</li>
-                            <li>Eligible registered EGU participants are encouraged to vote using the evaluation form on the online presentation page.</li>
-                            <li>Please vote only if you are not a BSc or MSc student or PhD candidate, are not participating in OSPP, are not a co-author, and do not share the first author's affiliation.</li>
+                            <li>Thanks to everyone who stopped by the poster, tested the app, and shared feedback.</li>
+                            <li>The conference demo links are now retired while the app and manuscript move through review.</li>
+                            <li>This page will point to the proper release location once the V1.0 application is publicly available.</li>
                         </ul>
                     </div>
                 </div>
@@ -577,26 +564,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        const MIRRORS = [
-            "https://varg.shinyapps.io/VARGtools_demo/",
-            "https://matthew-bolton.shinyapps.io/VARGtools_demo/"
-        ];
-        const MIRROR_WEIGHT = 0.5;
-
-        function launchApp() {
-            const loadingText = document.getElementById("loadingText");
-            loadingText.style.display = "block";
-
-            const selectedUrl = Math.random() < MIRROR_WEIGHT ? MIRRORS[0] : MIRRORS[1];
-            window.open(selectedUrl, "_blank", "noopener,noreferrer");
-
-            window.setTimeout(function () {
-                loadingText.style.display = "none";
-            }, 1000);
-        }
-
-    </script>
 </body>
 </html>
